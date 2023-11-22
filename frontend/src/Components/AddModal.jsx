@@ -150,7 +150,7 @@ const AddModal = ({addModal,setAddModal,refresh,setRefresh,active}) => {
                 
             </div>
 
-                                            <button type="submit" className="w-full text-black bg-blue-400  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">Add</button>
+                                            <button type="submit" className="w-full text-black bg-myGreen  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">Add</button>
 
                                             <div className="flex items-center justify-between">
 

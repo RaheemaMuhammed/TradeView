@@ -11,6 +11,7 @@ function App() {
     const [previousData, setPreviousData] = useState([])
     const [wsData,setWsData]=useState({})
     const [table,setTable] =useState(false)
+    
   
     
 
@@ -61,7 +62,7 @@ function App() {
             setPreviousData(response.data.payload)
         }
         getLatestTrade()
-  }, [])
+  }, [wsData])
   
 
 const handleMoreClick =()=>{
@@ -73,15 +74,15 @@ const handleMoreClick =()=>{
             <ToastContainer/>
 
     
-  <div className='w-full flex h-full'>
-    <div className='w-2/3 border-2 border-gray-300 '>
+  <div className='w-full lg:flex h-full'>
+    <div className='lg:w-2/3 border-2 border-gray-300 '>
         {table? <Table active={active} wsData={wsData}/> :
         <Chart active={active} wsData={wsData}/>
         
     }
 
     </div>
-    <div className='border-2 border-gray-300 w-1/3'>
+    <div className='border-2 border-gray-300 lg:w-1/3'>
       
 
 <div className="relative overflow-x-auto">
@@ -111,7 +112,7 @@ const handleMoreClick =()=>{
                 const previousItem = previousData.find(prevItem => prevItem.currency_pair === item.currency_pair);
 
                 const lastValueDiff = previousItem ? item.last_value - previousItem.last_value : 0;
-                const colorClass = lastValueDiff >= 0 ? 'text-green-500' :  'text-red-500';
+                const colorClass = lastValueDiff >= 0 ? 'text-myGreen' :  'text-myRed';
                 return(
                 <tr className={`bg-white ${active==item.currency_pair && ' border-blue-400 border-2'} hover:bg-gray-200 cursor-pointer  `} key={indx} >
                 <th scope="row" className="px-6 py-3 font-medium  text-gray-900 whitespace-nowrap " onClick={()=>{setActive(item.currency_pair);setTable(false)}}>
@@ -127,7 +128,7 @@ const handleMoreClick =()=>{
                     {item.change_percent}
                 </td>
                 <td className="px-6 py-4 " >
-                    <p className='bg-blue-400 border rounded-lg p-1 text-white text-base text-center cursor-pointer' onClick={handleMoreClick}>More..</p>
+                    <p className='bg-blue-400 border rounded-lg p-1 text-white text-base text-center cursor-pointer' onClick={handleMoreClick}>More</p>
                 </td>
             </tr>
 )})}

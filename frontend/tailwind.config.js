@@ -2,7 +2,12 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,jsx}"],
   theme: {
-    extend: {},
+    extend: {
+      colors:{
+        'myRed':'#f23645',
+        'myGreen':'#22ab94'
+      }
+    },
     screens: {
       xs: "480px",
       ss: "620px",

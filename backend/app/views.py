@@ -51,6 +51,16 @@ class TradeView(APIView):
             serializer=TradeSerializer(instance=trade,data=data,partial=True)
             if serializer.is_valid():
                 serializer.save()
+                channel_layer=get_channel_layer()
+
+                async_to_sync(channel_layer.group_send)(
+                             'trade_group',
+                             {
+                                  "type":"send_trade_update_to_group",
+                                  'data': serializer.data
+            
+                             },
+                        ) 
                 return Response({'status':200,'message':'Updated Successfully'})
             else:
                 return Response({'status':400,'error':serializer.errors,'message':'Invalid Data'})
@@ -62,6 +72,17 @@ class TradeView(APIView):
         try:
             id=request.GET.get('id')
             trade=Trade.objects.get(id=id)
+            channel_layer=get_channel_layer()
+
+            async_to_sync(channel_layer.group_send)(
+                             'trade_group',
+                             {
+                                  "type":"send_trade_update_to_group",
+                                  'data': ''
+            
+                             },
+                        ) 
+            
             trade.delete()
             return Response({'status':200,'message':"OK"})
         except Exception as e:

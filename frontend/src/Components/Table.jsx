@@ -18,7 +18,6 @@ const Table = ({active,wsData}) => {
       const fetchTrade=async()=>{
         const response=await axiosInstance.get('trade/',{params:{currency:active}})
         setTradeData(response.data.payload)
-        console.log(response.data.payload);
       }
      fetchTrade()
     }, [active,wsData,refresh])
@@ -50,8 +49,8 @@ const Table = ({active,wsData}) => {
                 <th scope="col" className="px-6 py-3">
                     Date
                 </th>
-                <th scope="col" className="px-6 py-3">
-                <p className='bg-blue-400 border rounded-lg p-1 px-2 text-white text-base text-center cursor-pointer' onClick={()=>{setAddModal(!addModal)}}>Add</p>
+                <th scope="col" className="px-3 py-3">
+                <p className='bg-myGreen border rounded-lg p-1 px-2 text-white text-base text-center cursor-pointer' onClick={()=>{setAddModal(!addModal)}}>Add</p>
                     
                 </th>
             </tr>
@@ -75,9 +74,9 @@ const Table = ({active,wsData}) => {
                      <td className="px-6 py-4">
                {item.trade_date} 
                      </td>
-                     <td className="px-4 py-4 flex gap-2" >
-                    <p className='bg-blue-400 border rounded-lg p-1 px-2 text-white text-base text-center cursor-pointer' onClick={()=>{setEditModal(!editModal);setItem(item)}}>Edit</p>
-                    <p className='bg-blue-400 border rounded-lg p-1 text-white text-base text-center cursor-pointer' onClick={()=>{setDeleteModal(!deleteModal);setItem(item)}}>Delete</p>
+                     <td className="px-4 py-4 flex gap-3" >
+                    <p className='text-blue-400 hover:underline font-semibold text-base text-center cursor-pointer' onClick={()=>{setEditModal(!editModal);setItem(item)}}>Edit</p>
+                    <p className='text-myRed hover:underline font-semibold text-base text-center cursor-pointer' onClick={()=>{setDeleteModal(!deleteModal);setItem(item)}}>Delete</p>
                 </td>
                 </tr>
                 )

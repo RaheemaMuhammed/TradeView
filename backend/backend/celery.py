@@ -16,7 +16,7 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 app.conf.beat_schedule = {
     'send_trade_data':{
         'task':'app.tasks.send_trade_data',
-        'schedule':10.0
+        'schedule':5.0
 
     }
 }

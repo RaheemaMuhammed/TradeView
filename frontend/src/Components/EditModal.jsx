@@ -159,7 +159,7 @@ const EditModal = ({editModal,setEditModal,item,refresh,setRefresh}) => {
                 
             </div>
 
-                                            <button type="submit" className="w-full text-black bg-blue-400  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">Edit</button>
+                                            <button type="submit" className="w-full text-black bg-myGreen focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">Edit</button>
 
                                             <div className="flex items-center justify-between">
 
