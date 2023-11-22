@@ -2,7 +2,8 @@ import { useState,useEffect,useRef } from 'react'
 import Chart from './Components/Chart';
 import { axiosInstance } from './api/instance';
 import Table from './Components/Table';
-
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
     const [latestData,setLatestData]=useState([])
@@ -65,10 +66,13 @@ function App() {
 
 const handleMoreClick =()=>{
     setTable(!table)
-    console.log('hello');
 }
 
   return (
+    <>
+            <ToastContainer/>
+
+    
   <div className='w-full flex h-full'>
     <div className='w-2/3 border-2 border-gray-300 '>
         {table? <Table active={active} wsData={wsData}/> :
@@ -110,7 +114,7 @@ const handleMoreClick =()=>{
                 const colorClass = lastValueDiff >= 0 ? 'text-green-500' :  'text-red-500';
                 return(
                 <tr className={`bg-white ${active==item.currency_pair && ' border-blue-400 border-2'} hover:bg-gray-200 cursor-pointer  `} key={indx} >
-                <th scope="row" className="px-6 py-3 font-medium  text-gray-900 whitespace-nowrap " onClick={()=>setActive(item.currency_pair)}>
+                <th scope="row" className="px-6 py-3 font-medium  text-gray-900 whitespace-nowrap " onClick={()=>{setActive(item.currency_pair);setTable(false)}}>
                     {item.currency_pair}
                 </th>
                 <td className={`px-6 py-4 ${colorClass}`}>
@@ -123,7 +127,7 @@ const handleMoreClick =()=>{
                     {item.change_percent}
                 </td>
                 <td className="px-6 py-4 " >
-                    <p className='bg-blue-500 border rounded-lg p-1 text-white text-base text-center cursor-pointer' onClick={handleMoreClick}>More..</p>
+                    <p className='bg-blue-400 border rounded-lg p-1 text-white text-base text-center cursor-pointer' onClick={handleMoreClick}>More..</p>
                 </td>
             </tr>
 )})}
@@ -137,6 +141,7 @@ const handleMoreClick =()=>{
     </div>
 
   </div>
+  </>
   )
 }
 
