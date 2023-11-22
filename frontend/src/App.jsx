@@ -8,7 +8,6 @@ import { ToastContainer } from 'react-toastify';
 function App() {
     const [latestData,setLatestData]=useState([])
     const [active,setActive]=useState('EURCAD')
-    const [previousData, setPreviousData] = useState([])
     const [wsData,setWsData]=useState({})
     const [table,setTable] =useState(false)
     
@@ -54,7 +53,6 @@ function App() {
         const getLatestTrade=async()=>{
             const response=await axiosInstance.get('latest/')
             setLatestData(response.data.payload)
-            setPreviousData(response.data.payload)
         }
         getLatestTrade()
     } catch (error) {
@@ -102,10 +100,7 @@ function App() {
         <tbody>
         
             {latestData?.map((item,indx)=>{
-                const previousItem = previousData.find(prevItem => prevItem.currency_pair === item.currency_pair);
-
-                const lastValueDiff = previousItem ? item.last_value - previousItem.last_value : 0;
-                const colorClass = lastValueDiff >= 0 ? 'text-myGreen' :  'text-myRed';
+                const colorClass = item.is_greater  ? 'text-myGreen' :  'text-myRed';
                 return(
                 <tr className={`bg-white ${active==item.currency_pair && ' border-blue-400 border-2'} hover:bg-gray-200 cursor-pointer  `} key={indx} >
                 <th scope="row" className="px-6 py-3 font-medium  text-gray-900 whitespace-nowrap " onClick={()=>{setActive(item.currency_pair);setTable(false)}}>

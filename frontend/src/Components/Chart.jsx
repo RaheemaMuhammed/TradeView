@@ -14,13 +14,9 @@ const Chart = ({active,wsData}) => {
        fetchTrade()
       } catch (error) {
         console.log(error);
-      }
-
-      
+      } 
     }, [active,wsData])
 
-    
-   
 
     const dates = tradeData.map((data) =>( new Date(data.trade_date)).toLocaleDateString());
     const lastValues = tradeData.map((data) => data.last_value);

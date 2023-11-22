@@ -95,9 +95,20 @@ class LatestTradeView(APIView):
             pairs=['EURCAD','USDJPY','GBPUSD','EURUSD']
             res=[]
             for pair in pairs:
-                trade=Trade.objects.filter(currency_pair=pair).order_by('-trade_date').first()
-                res.append(trade)
-            serializer=TradeSerializer(res,many=True)
-            return Response({'status':200,'message':"OK",'payload':serializer.data})
+                trades = Trade.objects.filter(currency_pair=pair).order_by('-trade_date')[:2]
+
+                if len(trades) >= 2:
+                    latest_trade = trades[0]
+                    second_last= trades[1]
+                    is_greater=latest_trade.last_value > second_last.last_value
+                    serializer_latest= TradeSerializer(latest_trade).data
+                    serializer_latest['is_greater'] =is_greater
+                    res.append(serializer_latest)
+                else:
+                    serialized_trades = TradeSerializer(trades, many=True).data
+                    res.extend(serialized_trades)
+
+            return Response({'status': '200', 'message': 'OK', 'payload': res})
+    
         except Exception as e:
             return Response({'status':400,'message':"Something went Wrong",'error':str(e)})
