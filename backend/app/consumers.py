@@ -4,7 +4,6 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 
 class TradeConsumer(AsyncWebsocketConsumer):
   
-
     async def connect(self):
         await self.accept()
        

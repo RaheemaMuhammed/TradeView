@@ -13,13 +13,18 @@ const Table = ({active,wsData}) => {
     const [refresh,setRefresh]=useState(false)
 
     useEffect(() => {
+    try {
+        const fetchTrade=async()=>{
+            const response=await axiosInstance.get('trade/',{params:{currency:active}})
+            setTradeData(response.data.payload)
+          }
+         fetchTrade()
+        
+    } catch (error) {
+        console.log(error);
+    }
 
-
-      const fetchTrade=async()=>{
-        const response=await axiosInstance.get('trade/',{params:{currency:active}})
-        setTradeData(response.data.payload)
-      }
-     fetchTrade()
+     
     }, [active,wsData,refresh])
 
 

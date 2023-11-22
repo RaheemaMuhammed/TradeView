@@ -6,13 +6,17 @@ const Chart = ({active,wsData}) => {
     const [tradeData,setTradeData]=useState([])
 
     useEffect(() => {
-
-
-      const fetchTrade=async()=>{
-        const response=await axiosInstance.get('trade/',{params:{currency:active}})
-        setTradeData(response.data.payload)
+      try {
+        const fetchTrade=async()=>{
+          const response=await axiosInstance.get('trade/',{params:{currency:active}})
+          setTradeData(response.data.payload)
+        }
+       fetchTrade()
+      } catch (error) {
+        console.log(error);
       }
-     fetchTrade()
+
+      
     }, [active,wsData])
 
     
@@ -52,7 +56,7 @@ const Chart = ({active,wsData}) => {
         responsive: true,
       };
   return (
-        <div className='my-5 '>
+        <div className='my-5'>
 
           <Line options={options} data={dataSets} height={200} />
 

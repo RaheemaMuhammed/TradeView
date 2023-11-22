@@ -35,18 +35,12 @@ function App() {
                 });
                 return newData;
             });
-            
-           
-            
-        
         };
-        socket.onerror=(error)=>{
-                    
+        socket.onerror=(error)=>{           
             console.log(error,'iam the error');
         }
 
         socket.onclose = () => {
-        
             console.log('WebSocket connection closed.');
             
         };
@@ -56,24 +50,23 @@ function App() {
 
   
   useEffect(() => {
+    try {
         const getLatestTrade=async()=>{
             const response=await axiosInstance.get('latest/')
             setLatestData(response.data.payload)
             setPreviousData(response.data.payload)
         }
         getLatestTrade()
+    } catch (error) {
+        console.log(error);
+    }
+       
   }, [wsData])
   
-
-const handleMoreClick =()=>{
-    setTable(!table)
-}
 
   return (
     <>
             <ToastContainer/>
-
-    
   <div className='w-full lg:flex h-full'>
     <div className='lg:w-2/3 border-2 border-gray-300 '>
         {table? <Table active={active} wsData={wsData}/> :
@@ -128,7 +121,7 @@ const handleMoreClick =()=>{
                     {item.change_percent}
                 </td>
                 <td className="px-6 py-4 " >
-                    <p className='bg-blue-400 border rounded-lg p-1 text-white text-base text-center cursor-pointer' onClick={handleMoreClick}>More</p>
+                    <p className='bg-blue-400 border rounded-lg p-1 text-white text-base text-center cursor-pointer' onClick={()=>setTable(!table)}>More</p>
                 </td>
             </tr>
 )})}

@@ -18,12 +18,12 @@ for file_path in currency_files:
     
     with open(file_path, 'r') as file:
         reader = csv.DictReader(file)
-        headers = next(reader)  # Get the header row
+        headers = next(reader)  
         for row in reader:
             if rows_added >= max_rows:
                 break
             
-            # Map CSV data to Trade model fields
+            # csv to model field
            
             currency_pair = os.path.basename(file_path).split('.')[0].upper()
             date_from_csv = datetime.strptime(row[data[i]], '%m/%d/%Y %H:%M')
@@ -33,7 +33,7 @@ for file_path in currency_files:
             close_price = float(row[None][3])
             change_pips = float(row[None][4])
             change_percent = float(row[None][5])            
-            # Create Trade object and save to the database
+            # saving to databse
             Trade.objects.create(
                 currency_pair=currency_pair,
                 last_value=close_price,
