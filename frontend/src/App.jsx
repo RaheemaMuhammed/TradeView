@@ -1,10 +1,142 @@
-import { useState } from 'react'
+import { useState,useEffect,useRef } from 'react'
+import Chart from './Components/Chart';
+import { axiosInstance } from './api/instance';
+import Table from './Components/Table';
 
 
 function App() {
+    const [latestData,setLatestData]=useState([])
+    const [active,setActive]=useState('EURCAD')
+    const [previousData, setPreviousData] = useState([])
+    const [wsData,setWsData]=useState({})
+    const [table,setTable] =useState(false)
+  
+    
+
+  useEffect(() => {
+    const socket= new WebSocket(`ws://127.0.0.1:8000/ws/new_trade/`)
+        socket.onopen=()=>{
+            console.log('WebSocket connection opened.');  
+        }
+        socket.onmessage = (event) => { 
+            const data = JSON.parse(event.data);
+            console.log('message', data);
+            
+            setWsData(event.data)
+            
+            setLatestData(prevData => {
+                const newData = prevData.map(item => {
+                    if (item.currency_pair === data.currency_pair) {
+                        return { ...item, ...data };
+                    }
+                    return item;
+                });
+                return newData;
+            });
+            
+           
+            
+        
+        };
+        socket.onerror=(error)=>{
+                    
+            console.log(error,'iam the error');
+        }
+
+        socket.onclose = () => {
+        
+            console.log('WebSocket connection closed.');
+            
+        };
+  
+    
+  }, [])
+
+  
+  useEffect(() => {
+        const getLatestTrade=async()=>{
+            const response=await axiosInstance.get('latest/')
+            setLatestData(response.data.payload)
+            setPreviousData(response.data.payload)
+        }
+        getLatestTrade()
+  }, [])
+  
+
+const handleMoreClick =()=>{
+    setTable(!table)
+    console.log('hello');
+}
 
   return (
-  <div className='text-blue-500 font-bold text-lg'>hello</div>
+  <div className='w-full flex h-full'>
+    <div className='w-2/3 border-2 border-gray-300 '>
+        {table? <Table active={active} wsData={wsData}/> :
+        <Chart active={active} wsData={wsData}/>
+        
+    }
+
+    </div>
+    <div className='border-2 border-gray-300 w-1/3'>
+      
+
+<div className="relative overflow-x-auto">
+    <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
+        <thead className="text-xs text-gray-500 uppercase bg-gray-50 ">
+            <tr>
+                <th scope="col" className="px-5 py-3">
+                    Currency
+                </th>
+                <th scope="col" className="px-5 py-3">
+                    Last
+                </th>
+                <th scope="col" className="px-5 py-3">
+                    Chg
+                </th>
+                <th scope="col" className="px-5 py-3">
+                    Chg%
+                </th>
+                <th scope="col" className="px-5 py-3">
+                   
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        
+            {latestData?.map((item,indx)=>{
+                const previousItem = previousData.find(prevItem => prevItem.currency_pair === item.currency_pair);
+
+                const lastValueDiff = previousItem ? item.last_value - previousItem.last_value : 0;
+                const colorClass = lastValueDiff >= 0 ? 'text-green-500' :  'text-red-500';
+                return(
+                <tr className={`bg-white ${active==item.currency_pair && ' border-blue-400 border-2'} hover:bg-gray-200 cursor-pointer  `} key={indx} >
+                <th scope="row" className="px-6 py-3 font-medium  text-gray-900 whitespace-nowrap " onClick={()=>setActive(item.currency_pair)}>
+                    {item.currency_pair}
+                </th>
+                <td className={`px-6 py-4 ${colorClass}`}>
+                    {item.last_value}
+                </td>
+                <td className={`px-6 py-4 ${colorClass}`}>
+                    {item.change_value}
+                </td>
+                <td className={`px-6 py-4 ${colorClass}`}>
+                    {item.change_percent}
+                </td>
+                <td className="px-6 py-4 " >
+                    <p className='bg-blue-500 border rounded-lg p-1 text-white text-base text-center cursor-pointer' onClick={handleMoreClick}>More..</p>
+                </td>
+            </tr>
+)})}
+            
+          
+        </tbody>
+    </table>
+</div>
+
+
+    </div>
+
+  </div>
   )
 }
 

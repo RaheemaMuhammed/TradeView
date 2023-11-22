@@ -4,15 +4,16 @@ from .consumers import TradeConsumer
 from .models import *
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
-
+from django.db.models import Max
 
 from rest_framework.response import Response
 # Create your views here.
 class TradeView(APIView):
     def get(self,request):
         try:
+            print(request)
             currency=request.GET.get('currency')
-            trades=Trade.objects.filter(currency_pair=currency)
+            trades=Trade.objects.filter(currency_pair=currency).order_by('trade_date')
             serializers=TradeSerializer(trades,many=True)
             return Response({'payload':serializers.data,'status':200,'message':'OK'})
         except Exception as e:
@@ -21,7 +22,7 @@ class TradeView(APIView):
     def post(self,request):
         try:
             data=request.data
-            serializer=PostTradeSerializer(data=data)
+            serializer=TradeSerializer(data=data)
             if serializer.is_valid():
                 serializer.save()
                 
@@ -47,7 +48,7 @@ class TradeView(APIView):
             data=request.data
             id=data['id']
             trade=Trade.objects.get(id=id)
-            serializer=PostTradeSerializer(instance=trade,data=data,partial=True)
+            serializer=TradeSerializer(instance=trade,data=data,partial=True)
             if serializer.is_valid():
                 serializer.save()
                 return Response({'status':200,'message':'Updated Successfully'})
@@ -63,5 +64,19 @@ class TradeView(APIView):
             trade=Trade.objects.get(id=id)
             trade.delete()
             return Response({'status':200,'message':"OK"})
+        except Exception as e:
+            return Response({'status':400,'message':"Something went Wrong",'error':str(e)})
+        
+
+class LatestTradeView(APIView):
+    def get(self,request):
+        try:
+            pairs=['EURCAD','USDJPY','GBPUSD','EURUSD']
+            res=[]
+            for pair in pairs:
+                trade=Trade.objects.filter(currency_pair=pair).order_by('-trade_date').first()
+                res.append(trade)
+            serializer=TradeSerializer(res,many=True)
+            return Response({'status':200,'message':"OK",'payload':serializer.data})
         except Exception as e:
             return Response({'status':400,'message':"Something went Wrong",'error':str(e)})
