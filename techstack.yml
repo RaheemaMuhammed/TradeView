@@ -2,7 +2,7 @@ repo_name: RaheemaMuhammed/TradeView
 report_id: 90cacedaf8adf4b2288bf7f87459ed8c
 version: 0.1
 repo_type: Public
-timestamp: '2024-01-05T08:21:43+00:00'
+timestamp: '2024-02-29T19:06:06+00:00'
 requested_by: RaheemaMuhammed
 provider: github
 branch: main
@@ -216,8 +216,8 @@ tools:
   last_updated_by: RaheemaMuhammed
   last_updated_on: 2023-11-20 15:39:44.000000000 Z
 - name: Zope
-  description: 'A free and open source web application server written in the object-oriented
-    programming language “Python” '
+  description: A free and open source web application server written in the object-oriented
+    programming language “Python”
   website_url: https://www.zope.org
   open_source: true
   hosted_saas: false
@@ -342,18 +342,18 @@ tools:
     detected_date: May 10
     severity: critical
     first_patched: 4.1.9
-  - name: Django has regular expression denial of service vulnerability in EmailValidator/URLValidator
-    cve_id: CVE-2023-36053
-    cve_url: https://github.com/advisories/GHSA-jh3w-4vvf-mjgr
-    detected_date: Jul 6
-    severity: high
-    first_patched: 4.1.10
   - name: Resource exhaustion in Django
     cve_id: CVE-2023-24580
     cve_url: https://github.com/advisories/GHSA-2hrw-hx67-34x6
     detected_date: Feb 16
     severity: high
     first_patched: 4.1.7
+  - name: Django has regular expression denial of service vulnerability in EmailValidator/URLValidator
+    cve_id: CVE-2023-36053
+    cve_url: https://github.com/advisories/GHSA-jh3w-4vvf-mjgr
+    detected_date: Jul 6
+    severity: high
+    first_patched: 4.1.10
 - name: PyJWT
   description: JSON Web Token implementation in Python
   package_url: https://pypi.org/project/PyJWT
@@ -629,12 +629,32 @@ tools:
   last_updated_by: RaheemaMuhammed
   last_updated_on: 2023-11-21 06:23:04.000000000 Z
   vulnerabilities:
+  - name: cryptography NULL pointer dereference with pkcs12.serialize_key_and_certificates
+      when called with a non-matching certificate and private key and an hmac_hash
+      override
+    cve_id: CVE-2024-26130
+    cve_url: https://github.com/advisories/GHSA-6vqw-3v5j-54x4
+    detected_date: Feb 22
+    severity: high
+    first_patched: 42.0.4
+  - name: Python Cryptography package vulnerable to Bleichenbacher timing oracle attack
+    cve_id: CVE-2023-50782
+    cve_url: https://github.com/advisories/GHSA-3ww4-gg4f-jr7f
+    detected_date: Feb 6
+    severity: high
+    first_patched: 42.0.0
   - name: cryptography vulnerable to NULL-dereference when loading PKCS7 certificates
     cve_id: CVE-2023-49083
     cve_url: https://github.com/advisories/GHSA-jfhm-5ghh-2f97
     detected_date: Nov 29
     severity: moderate
     first_patched: 41.0.6
+  - name: Null pointer dereference in PKCS12 parsing
+    cve_id: CVE-2024-0727
+    cve_url: https://github.com/advisories/GHSA-9v9h-cgj8-h64p
+    detected_date: Feb 17
+    severity: moderate
+    first_patched: 42.0.2
 - name: daphne
   description: Django ASGI
   package_url: https://pypi.org/project/daphne
@@ -1239,6 +1259,13 @@ tools:
   last_updated_by: RaheemaMuhammed
   last_updated_on: 2023-11-20 15:39:44.000000000 Z
   vulnerabilities:
+  - name: Vite dev server option `server.fs.deny` can be bypassed when hosted on case-insensitive
+      filesystem
+    cve_id: CVE-2024-23331
+    cve_url: https://github.com/advisories/GHSA-c24v-8rfc-w8vw
+    detected_date: Jan 20
+    severity: high
+    first_patched: 5.0.12
   - name: Vite XSS vulnerability in `server.transformIndexHtml` via URL payload
     cve_id: CVE-2023-49293
     cve_url: https://github.com/advisories/GHSA-92r3-m2mg-pj97
